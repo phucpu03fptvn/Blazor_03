@@ -1,0 +1,38 @@
+﻿@using Wallet.Model
+
+<div class="modal" tabindex="-1" style="display: @(IsVisible ? "block" : "none");">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Deposit Money</h5>
+                <button type="button" class="btn-close" @onclick="Hide"></button>
+            </div>
+            <div class="modal-body">
+                <input type="number" class="form-control" placeholder="Enter amount" @bind="Amount" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" @onclick="Hide">Cancel</button>
+                <button type="button" class="btn btn-success" @onclick="Deposit">Deposit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public WalletTransactionViewModel WalletViewModel { get; set; }
+
+    private decimal Amount;
+    private bool IsVisible;
+
+    public void Show() => IsVisible = true;
+    private void Hide() => IsVisible = false;
+
+    private void Deposit()
+    {
+        if (Amount > 0)
+        {
+            WalletViewModel.AddTransaction("Deposit", Amount);
+            Hide();
+        }
+    }
+}

@@ -1,0 +1,81 @@
+@page "/form-validation-course"
+@using BlazorBase.ViewModels;
+
+
+<h2 class="fw-bold">Course Registration Form</h2>
+
+<EditForm Model="@course" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <div class="col-lg-6">
+        <div class="form-group">
+            <label for="fullName">Full Name *</label>
+            <InputText class="form-control" id="fullName" placeholder="Enter your full name" @bind-Value="course.FullName" />
+            <ValidationMessage For="@(() => course.FullName)" />
+        </div>
+
+        <div class="form-group mt-4">
+            <label for="email">Email *</label>
+            <InputText type="email" class="form-control" id="email" placeholder="Enter your email" @bind-Value="course.Email" />
+            <ValidationMessage For="@(() => course.Email)" />
+        </div>
+
+        <div class="form-group mt-4">
+            <label for="phoneNumber">Phone Number *</label>
+            <InputText type="tel" class="form-control" id="phoneNumber" placeholder="Enter your phone number" @bind-Value="course.PhoneNumber" />
+            <ValidationMessage For="@(() => course.PhoneNumber)" />
+        </div>
+
+        <div class="form-group mt-4">
+            <label for="selectCourse">Select Course *</label>
+            <select class="form-control form-control-sm" id="selectCourse" @bind="course.SelectedCourse">
+                <option value="">Choose a course...</option>
+                <option value="course1">Course 1</option>
+                <option value="course2">Course 2</option>
+                <option value="course3">Course 3</option>
+            </select>
+            <ValidationMessage For="@(() => course.SelectedCourse)" />
+        </div>
+
+      <!-- Learning Mode (Radio Button) -->
+<div class="form-group mt-4">
+     <label class="form-label">Learning Mode *</label>
+        <InputRadioGroup @bind-Value="course.LearningMode">
+            <InputRadio Value="1"/> Online
+            <InputRadio Value="2"/> Offline
+        </InputRadioGroup>
+        <ValidationMessage For="@(() => course.LearningMode)" />
+</div>
+
+
+
+        <div class="form-group mt-4">
+            <label for="desiredStartDate">Desired Start Date *</label>
+            <InputDate class="form-control" id="desiredStartDate" @bind-Value="course.DesiredStartDate" />
+            <ValidationMessage For="@(() => course.DesiredStartDate)" />
+        </div>
+
+        <div class="form-group mt-4">
+            <label for="comments">Comments</label>
+            <InputTextArea class="form-control" id="comments" rows="3" placeholder="Enter any comments" @bind-Value="course.Comments"></InputTextArea>
+        </div>
+
+        <div class="form-group mt-4">
+            <label for="acceptTerms" class="form-check-label">
+                <InputCheckbox class="form-check-input" id="acceptTerms" @bind-Value="course.AcceptTerms" />
+                I agree to the terms and conditions
+            </label>
+            <ValidationMessage For="@(() => course.AcceptTerms)" />
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100 mt-4">Submit</button>
+    </div>
+</EditForm>
+
+@code {
+    private Course course = new Course();
+
+    private void HandleValidSubmit()
+    {
+        Console.WriteLine("Form submitted!");
+    }
+}

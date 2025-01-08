@@ -1,0 +1,53 @@
+﻿@page "/wallet"
+@using Wallet.Model
+
+@inject WalletTransactionViewModel WalletViewModel
+
+<div class="container">
+    <div class="container d-flex justify-content-center align-items-center min-vh-100">
+        <div class="card bg-dark border-0 shadow" style="width: 100%; max-width: 400px;">
+            <div class="card-body text-center">
+                <h3 class="card-title mt-2 mb-4 text-light fw-bold">My Wallet</h3>
+                <h2 class="text-warning fw-bold">$@WalletViewModel.Balance</h2>
+                <p class="text-white">Total balance</p>
+
+                <div class="mb-4">
+                    <button class="btn btn-success me-2" @onclick="ShowDepositModal">Deposit</button>
+                    <button class="btn btn-danger" @onclick="ShowWithdrawModal">Withdraw</button>
+                </div>
+
+                <h5 class="text-white mb-3">Transaction History</h5>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-striped">
+                        <tbody>
+                            @foreach (var transaction in WalletViewModel.Transactions)
+                            {
+                                <tr class="@(transaction.Type == "Withdraw" ? "table-danger" : "table-success")">
+                                    <td>@transaction.Type</td>
+                                    <td>$@transaction.Amount</td>
+                                    <td>@transaction.Time.ToString("dd MMM hh:mmtt")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<DepositModal @ref="DepositModalInstance" WalletViewModel="WalletViewModel" />
+<WithdrawModal @ref="WithdrawModalInstance" WalletViewModel="WalletViewModel" />
+
+@code {
+    private DepositModal DepositModalInstance;
+    private WithdrawModal WithdrawModalInstance;
+
+    private void ShowDepositModal() => DepositModalInstance.Show();
+    private void ShowWithdrawModal() => WithdrawModalInstance.Show();
+
+    private string GetRowClass(string type) => type == "Deposit" ? "bg-light-green" : "bg-light-pink";
+    private string GetTextClass(string type) => type == "Deposit" ? "text-success fw-bold" : "text-danger fw-bold";
+}
+
+
